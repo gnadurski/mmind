@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="this is a puzzle">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="container">
+        <!--<h1>Mastermind puzzle</h1>-->
+        <div class="board">
+            <div class="player-space flex-row">
+                <button class="goal-row button-big reveal">Reveal?</button>
+                <ul class="flex-row goal hidden">
+                    <li class="p-color gray"></li>
+                    <li class="p-color gray"></li>
+                    <li class="p-color gray"></li>
+                    <li class="p-color gray"></li>
+                </ul>
+                <button class="reroll hidden">Try again?</button>
+            </div>
+
+            <div class="table">
+                <div class="palette">
+                    <ul class="flex-row">
+                        <li class="p-color red">
+                        </li>
+                        <li class="p-color green">
+                        </li>
+                        <li class="p-color blue">
+                        </li>
+                        <li class="p-color white">
+                        </li>
+                    </ul>
+                    <ul class="flex-row">
+                        <li class="p-color black">
+                        </li>
+                        <li class="p-color yellow">
+                        </li>
+                        <li class="p-color purple">
+                        </li>
+                        <li class="p-color orange">
+                        </li>
+                    </ul>
+                </div>
+                <div class="rows">
+                    <ul class="flex-row center">
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                    </ul>
+                    <ul class="flex-row center">
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                    </ul>
+                    <ul class="flex-row center">
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                    </ul>
+                    <ul class="flex-row center">
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                    </ul>
+                    <ul class="flex-row center">
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                    </ul>
+                    <ul class="flex-row center">
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                    </ul>
+                    <ul class="flex-row center">
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                    </ul>
+                    <ul class="flex-row center">
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                    </ul>
+                    <ul class="flex-row center active-row">
+                        <li class="p-color gray selected"></li>
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                        <li class="p-color gray"></li>
+                    </ul>
+                </div>
+                <div class="rows-hint">
+                    <ul class="flex-row center">
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                    </ul>
+                    <ul class="flex-row center">
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                    </ul>
+                    <ul class="flex-row center">
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                    </ul>
+                    <ul class="flex-row center">
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                    </ul>
+                    <ul class="flex-row center">
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                    </ul>
+                    <ul class="flex-row center">
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                    </ul>
+                    <ul class="flex-row center">
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                    </ul>
+                    <ul class="flex-row center">
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                    </ul>
+                    <ul class="flex-row center">
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                        <li class="ansquare blank"></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="guessing player-space">
+                <button class="button-big button-ask">Check</button>
+            </div>
+        </div>
+
+
+        <h2 class="kat">thank you Katie</h2>
+    </div>
+
+    <script src="index.js" async defer></script>
+</body>
+
+</html>
