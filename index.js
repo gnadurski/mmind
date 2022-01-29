@@ -3,118 +3,7 @@ let goalSequence;
 let workSequence;
 let indication;
 let selection = document.querySelector(".selected");
-
-// class ColorSequence {
-//     constructor(options) {
-//         const defaultSequence = {
-//             first: "gray",
-//             second: "gray",
-//             third: "gray",
-//             fourth: "gray",
-//             toCode: function() {
-//                 let encodedSequence = 0;
-//                 for (let i = 3; i >= 0; i--) {
-//                     switch (valueOf.position) {
-//                         case "first":
-//                             encodedSequence += (1 * 10) ^ i;
-//                             break;
-//                         case "second":
-//                             encodedSequence += (2 * 10) ^ i;
-//                             break;
-//                         case "blue":
-//                             encodedSequence += (3 * 10) ^ i;
-//                             break;
-//                         case "red":
-//                             encodedSequence += (4 * 10) ^ i;
-//                             break;
-//                         case "green":
-//                             encodedSequence += (5 * 10) ^ i;
-//                             break;
-//                         case "blue":
-//                             encodedSequence += (6 * 10) ^ i;
-//                             break;
-//                         case "green":
-//                             encodedSequence += (7 * 10) ^ i;
-//                             break;
-//                         case "blue":
-//                             encodedSequence += (8 * 10) ^ i;
-//                             break;
-//                         case "gray":
-//                             encodedSequence += (9 * 10) ^ i;
-//                             break;
-//                     }
-
-//                     digitPosition -= 1;
-//                 }
-//                 return encodedSequence;
-//             },
-//         };
-
-//         const populated = Object.assign(defaultSequence, options);
-//         for (const key in populated) {
-//             if (populated.hasOwnProperty(key)) {
-//                 this[key] = populated[key];
-//             }
-//         }
-//     }
-// }
-// const TestSequence = new ColorSequence({
-//     first: "red",
-//     second: "yellow",
-//     fourth: "black",
-// });
-
-function readColor(colVal) {
-    let colorFinally;
-    switch (colVal) {
-        case 1:
-            colorFinally = "red";
-            break;
-
-        case "2":
-            colorFinally = "green";
-            break;
-
-        case "3":
-            colorFinally = "blue";
-            break;
-
-        case "4":
-            colorFinally = "white";
-            break;
-
-        case "5":
-            colorFinally = "black";
-            break;
-
-        case "6":
-            colorFinally = "yellow";
-            break;
-
-        case "7":
-            colorFinally = "purple";
-            break;
-
-        case "8":
-            colorFinally = "orange";
-            break;
-
-        case "9":
-            colorFinally = "gray";
-            break;
-    }
-    return colorFinally;
-}
-
-function toColor(colorCode) {
-    let rowArray = ["gray", "gray", "gray", "gray"];
-    let colorDigit;
-    for (let i = 0; i < 4; i++) {
-        colorDigit = toString(colorCode);
-        rowArray[i] = readColor(colorDigit[i]);
-    }
-    return rowArray;
-}
+let seqHeight = 0;
 
 // randomize a sequence of colors
 function randomColor() {
@@ -132,12 +21,64 @@ function randomSequence() {
 
 goalSequence = randomSequence();
 
+// translate sequences
+function toColors(clay) {
+    let result = ["gray", "gray", "gray", "gray"];
+    for (let i = 0; i < 4; i++) {
+        let colorNumber = clay.toString()[i];
+        switch (colorNumber) {
+            case "1":
+                result[i] = "red";
+                break;
+            case "2":
+                result[i] = "green";
+                break;
+            case "3":
+                result[i] = "blue";
+                break;
+            case "4":
+                result[i] = "white";
+                break;
+            case "5":
+                result[i] = "black";
+                break;
+            case "6":
+                result[i] = "yellow";
+                break;
+            case "7":
+                result[i] = "purple";
+                break;
+            case "8":
+                result[i] = "orange";
+                break;
+            case "9":
+                result[i] = "gray";
+                break;
+            case "0":
+                console.log("There was a 0 where it shouldn't be, watch out!");
+                break;
+        }
+    }
+    return result;
+}
+
 // reveal goal sequence on reveal button click
 function reveal() {
+    // loop 4 times
+    for (let i = 0; i < 4; i++) {
+        // reset circle's classes giving it color
+        document.querySelector(`ul.goal > li:nth-child(${i + 1})`).className =
+            "p-color";
+        // assign a circle it's randomized color
+        document
+            .querySelector(`ul.goal > li:nth-child(${i + 1})`)
+            .classList.add(toColors(goalSequence)[i]);
+    }
     document.querySelector(".hidden").classList.remove("hidden");
     document.querySelector(".reroll").classList.remove("hidden");
     document.querySelector(".reveal").classList.add("hidden");
 }
+
 document.getElementsByClassName("reveal")[0].onclick = reveal;
 
 // attach reset function to try again button
@@ -185,4 +126,8 @@ document.querySelectorAll(".palette>.flex-row>.p-color").forEach((item) => {
 
 // output hints according to guessing's accuracy
 
-// game over conditions
+// check if game over conditions are met
+if (workSequence === goalSequence) {
+    window.confirm(`Congratulations! You've guessed on ${seqHeight}th line!`);
+    seqHeight = 0;
+}
