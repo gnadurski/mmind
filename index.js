@@ -3,7 +3,7 @@ let goalSequence;
 let workSequence;
 let indication;
 let selection = document.querySelector(".selected");
-let seqHeight = 0;
+let seqHeight = 1;
 
 // randomize a sequence of colors
 function randomColor() {
@@ -122,12 +122,54 @@ document.querySelectorAll(".palette>.flex-row>.p-color").forEach((item) => {
     });
 });
 
+// digitise guessed colors row
+function digitise(colSeq) {
+    // to make it easier, first remove selection
+    document.querySelector(".selected").classList.remove("selected");
+    // read color class names of circles
+    // assign digit values according to sequence colors
+}
+
 // compare guessed sequence with randomized one
+function compareGuess() {
+    digitise(workSequence);
+    moveRowUp();
+}
+
+document
+    .getElementsByClassName("button-ask")[0]
+    .addEventListener("click", compareGuess);
+
+// activate next row and mark it's first circle as selected
+function moveRowUp() {
+    let nextRow = document.querySelector(
+        `div.rows > ul:nth-child(${9 - seqHeight})`
+    );
+    if (nextRow === null) {
+        console.log("There is no next row");
+    } else {
+        nextRow.classList.add("active-row");
+        seqHeight++;
+        document.querySelector("ul.active-row > li").classList.add("selected");
+    }
+}
 
 // output hints according to guessing's accuracy
 
 // check if game over conditions are met
-if (workSequence === goalSequence) {
-    window.confirm(`Congratulations! You've guessed on ${seqHeight}th line!`);
-    seqHeight = 0;
+function checkGameOver() {
+    if (workSequence === goalSequence) {
+        window.confirm(`Congratulations! You've guessed on ${seqHeight}th line!`);
+        seqHeight = 1;
+        reroll();
+    } else if (document.querySelector(".active-row") === null) {
+        window.confirm(`Ran out of guesses, try again?`);
+        reroll();
+    } else {
+        console.log("Something went wrong with game over conditions");
+    }
 }
+
+document
+    .getElementsByClassName("button-ask")[0]
+    .addEventListener("click", checkGameOver);
