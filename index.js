@@ -5,6 +5,30 @@ let indication;
 let selection = document.querySelector(".selected");
 let seqHeight = 1;
 
+// initialize
+function startInitialize() {
+    randomiseAgain();
+    activateRow(); //first row becomes active
+    document.querySelectorAll(".palette>.flex-row>.p-color").forEach((item) => {
+        item.addEventListener("click", handlePaletteClick);
+    });
+
+    // color palette recognizing clicks
+    function handlePaletteClick(colorClicked) {
+        replaceColor(colorClicked);
+    }
+
+    document.getElementsByClassName("reveal")[0].onclick = reveal; // reveal button
+    document.getElementsByClassName("reroll")[0].onclick = reroll; // reroll button
+    document
+        .getElementsByClassName("button-ask")[0]
+        .addEventListener("click", compareGuess); // check button compare
+
+    document
+        .getElementsByClassName("button-ask")[0]
+        .addEventListener("click", checkGameOver); // check button game over
+}
+
 // randomize a sequence of colors
 function randomColor() {
     return Math.floor(Math.random() * 8 + 1);
@@ -19,7 +43,9 @@ function randomSequence() {
     );
 }
 
-goalSequence = randomSequence();
+function randomiseAgain() {
+    goalSequence = randomSequence();
+}
 
 // translate sequences
 function toColors(clay) {
@@ -79,30 +105,36 @@ function reveal() {
     document.querySelector(".reveal").classList.add("hidden");
 }
 
-document.getElementsByClassName("reveal")[0].onclick = reveal;
-
 // attach reset function to try again button
 function reroll() {
     document.querySelector(".hidden").classList.remove("hidden");
     document.querySelector(".reroll").classList.add("hidden");
     document.querySelector(".goal").classList.add("hidden");
-    goalSequence = randomSequence();
+    randomizeAgain();
 }
-document.getElementsByClassName("reroll")[0].onclick = reroll;
 
 // pick a circle to change color
-document.querySelectorAll(".active-row>.p-color").forEach((item) => {
-    item.addEventListener("click", (e) => {
-        // click selected colored circle to make it gray
-        if (selection === e.target) {
-            selection.classList.remove(selection.classList[1]);
-            selection.classList.add("gray");
-        } //
-        selection.classList.remove("selected");
-        e.target.classList.add("selected");
-        selection = e.target;
+function activateRow() {
+    document.querySelectorAll(".active-row>.p-color").forEach((item) => {
+        item.addEventListener("click", handleSelectionClick);
     });
-});
+}
+
+function handleSelectionClick(e) {
+    // click selected colored circle to make it gray
+    if (e.target === selection) {
+        selection.className = "p-color gray selected";
+    } else {
+        document.querySelector(".selected").classList.remove("selected");
+        e.target.classList.add("selected");
+    }
+    selection = e.target;
+}
+/* function deactivateRow() {
+    document.querySelectorAll(".active-row>p.color").forEach((item) => {
+        item.removeEventListener("click");
+    });
+}*/
 
 // select color for picked circle
 function replaceColor(event) {
@@ -113,35 +145,54 @@ function replaceColor(event) {
         selection.classList.add("selected");
     } else {
         selection.nextElementSibling.classList.add("selected");
-        selection = selection.nextElementSibling;
+        selection = document.querySelector(".selected");
     }
-}
-document.querySelectorAll(".palette>.flex-row>.p-color").forEach((item) => {
-    item.addEventListener("click", (e) => {
-        replaceColor(e);
-    });
-});
-
-// digitise guessed colors row
-function digitise(colSeq) {
-    // to make it easier, first remove selection
-    document.querySelector(".selected").classList.remove("selected");
-    // read color class names of circles
-    // assign digit values according to sequence colors
 }
 
 // compare guessed sequence with randomized one
 function compareGuess() {
-    digitise(workSequence);
+    // hints stored: n -> color not found, w -> color in wrong position, b -> color correct
+    let hintResult = ["n", "n", "n", "n"];
+    // to make it easier, first remove selection
+    document.querySelector(".selected").classList.remove("selected");
+    // read color class names of circles
+    let givenCols = [
+        document.querySelector(`div.rows > ul.active-row > li:nth-child(${1})`)
+        .classList[1],
+        document.querySelector(`div.rows > ul.active-row > li:nth-child(${2})`)
+        .classList[1],
+        document.querySelector(`div.rows > ul.active-row > li:nth-child(${3})`)
+        .classList[1],
+        document.querySelector(`div.rows > ul.active-row > li:nth-child(${4})`)
+        .classList[1],
+    ];
+    for (let i = 0; i < 4; i++) {
+        let hintPos = 0;
+        if (toColors(goalSequence).find((element) => element === givenCols[i])) {
+            if (givenCols[i] === toColors(goalSequence)[i]) {
+                hintResult[hintPos] = "b";
+                hintPos++;
+            } else {
+                hintResult[hintPos] = "w";
+                hintPos++;
+            }
+        }
+        console.log(hintResult);
+    }
     moveRowUp();
 }
 
-document
-    .getElementsByClassName("button-ask")[0]
-    .addEventListener("click", compareGuess);
-
 // activate next row and mark it's first circle as selected
 function moveRowUp() {
+    document.querySelectorAll(".active-row>.p-color").forEach((item) => {
+        item.removeEventListener("click", handleSelectionClick);
+    });
+    document.querySelector("ul.active-row").classList.remove("active-row");
+
+    function testedFunc() {
+        console.log("surprisingly, it works");
+    }
+
     let nextRow = document.querySelector(
         `div.rows > ul:nth-child(${9 - seqHeight})`
     );
@@ -151,7 +202,9 @@ function moveRowUp() {
         nextRow.classList.add("active-row");
         seqHeight++;
         document.querySelector("ul.active-row > li").classList.add("selected");
+        selection = document.querySelector(".selected");
     }
+    activateRow();
 }
 
 // output hints according to guessing's accuracy
@@ -170,6 +223,4 @@ function checkGameOver() {
     }
 }
 
-document
-    .getElementsByClassName("button-ask")[0]
-    .addEventListener("click", checkGameOver);
+startInitialize();
