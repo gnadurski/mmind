@@ -1,6 +1,7 @@
 //console.log("It's working!")
+
 let goalSequence;
-let workSequence;
+let workSequence = ["gray", "gray", "gray", "gray"];
 let indication;
 let selection = document.querySelector(".selected");
 let seqHeight = 1;
@@ -47,47 +48,6 @@ function randomiseAgain() {
     goalSequence = randomSequence();
 }
 
-// translate sequences
-function toColors(clay) {
-    let result = ["gray", "gray", "gray", "gray"];
-    for (let i = 0; i < 4; i++) {
-        let colorNumber = clay.toString()[i];
-        switch (colorNumber) {
-            case "1":
-                result[i] = "red";
-                break;
-            case "2":
-                result[i] = "green";
-                break;
-            case "3":
-                result[i] = "blue";
-                break;
-            case "4":
-                result[i] = "white";
-                break;
-            case "5":
-                result[i] = "black";
-                break;
-            case "6":
-                result[i] = "yellow";
-                break;
-            case "7":
-                result[i] = "purple";
-                break;
-            case "8":
-                result[i] = "orange";
-                break;
-            case "9":
-                result[i] = "gray";
-                break;
-            case "0":
-                console.log("There was a 0 where it shouldn't be, watch out!");
-                break;
-        }
-    }
-    return result;
-}
-
 // reveal goal sequence on reveal button click
 function reveal() {
     // loop 4 times
@@ -98,7 +58,7 @@ function reveal() {
         // assign a circle it's randomized color
         document
             .querySelector(`ul.goal > li:nth-child(${i + 1})`)
-            .classList.add(toColors(goalSequence)[i]);
+            .classList.add(toCol(goalSequence.toString())[i]);
     }
     document.querySelector(".hidden").classList.remove("hidden");
     document.querySelector(".reroll").classList.remove("hidden");
@@ -110,7 +70,7 @@ function reroll() {
     document.querySelector(".hidden").classList.remove("hidden");
     document.querySelector(".reroll").classList.add("hidden");
     document.querySelector(".goal").classList.add("hidden");
-    randomizeAgain();
+    randomiseAgain();
 }
 
 // pick a circle to change color
@@ -168,8 +128,8 @@ function compareGuess() {
     ];
     for (let i = 0; i < 4; i++) {
         let hintPos = 0;
-        if (toColors(goalSequence).find((element) => element === givenCols[i])) {
-            if (givenCols[i] === toColors(goalSequence)[i]) {
+        if (toCol(goalSequence).find((element) => element === givenCols[i])) {
+            if (givenCols[i] === toCol(goalSequence)[i]) {
                 hintResult[hintPos] = "b";
                 hintPos++;
             } else {
@@ -211,6 +171,9 @@ function moveRowUp() {
 
 // check if game over conditions are met
 function checkGameOver() {
+    for (let i = 0; i < 4; i++) {
+        workSequence[i] = document.querySelectorAll(".active-row>p-color")[i];
+    }
     if (workSequence === goalSequence) {
         window.confirm(`Congratulations! You've guessed on ${seqHeight}th line!`);
         seqHeight = 1;
