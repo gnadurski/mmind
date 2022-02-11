@@ -19,15 +19,15 @@ function startInitialize() {
         replaceColor(colorClicked);
     }
 
+    document
+        .getElementsByClassName("button-ask")[0]
+        .addEventListener("click", checkGameOver); // check button game over
+
     document.getElementsByClassName("reveal")[0].onclick = reveal; // reveal button
     document.getElementsByClassName("reroll")[0].onclick = reroll; // reroll button
     document
         .getElementsByClassName("button-ask")[0]
         .addEventListener("click", compareGuess); // check button compare
-
-    document
-        .getElementsByClassName("button-ask")[0]
-        .addEventListener("click", checkGameOver); // check button game over
 }
 
 // randomize a sequence of colors
@@ -58,7 +58,7 @@ function reveal() {
         // assign a circle it's randomized color
         document
             .querySelector(`ul.goal > li:nth-child(${i + 1})`)
-            .classList.add(toCol(goalSequence.toString())[i]);
+            .classList.add(toCols(goalSequence.toString())[i]);
     }
     document.querySelector(".hidden").classList.remove("hidden");
     document.querySelector(".reroll").classList.remove("hidden");
@@ -128,8 +128,8 @@ function compareGuess() {
     ];
     for (let i = 0; i < 4; i++) {
         let hintPos = 0;
-        if (toCol(goalSequence).find((element) => element === givenCols[i])) {
-            if (givenCols[i] === toCol(goalSequence)[i]) {
+        if (toCols(goalSequence).find((element) => element === givenCols[i])) {
+            if (givenCols[i] === toCols(goalSequence)[i]) {
                 hintResult[hintPos] = "b";
                 hintPos++;
             } else {
@@ -137,9 +137,10 @@ function compareGuess() {
                 hintPos++;
             }
         }
-        console.log(hintResult);
+        //console.log(hintResult);
     }
-    moveRowUp();
+    if (document.querySelector(".active-row").previousElementSibling !== null)
+        moveRowUp();
 }
 
 // activate next row and mark it's first circle as selected
@@ -163,8 +164,9 @@ function moveRowUp() {
         seqHeight++;
         document.querySelector("ul.active-row > li").classList.add("selected");
         selection = document.querySelector(".selected");
+
+        activateRow();
     }
-    activateRow();
 }
 
 // output hints according to guessing's accuracy
@@ -172,18 +174,32 @@ function moveRowUp() {
 // check if game over conditions are met
 function checkGameOver() {
     for (let i = 0; i < 4; i++) {
-        workSequence[i] = document.querySelectorAll(".active-row>p-color")[i];
+        workSequence[i] = document.querySelectorAll(".active-row>.p-color")[
+            i
+        ].classList[1];
     }
-    if (workSequence === goalSequence) {
+    if (
+        workSequence[0] === toCols(goalSequence)[0] &&
+        workSequence[1] === toCols(goalSequence)[1] &&
+        workSequence[2] === toCols(goalSequence)[2] &&
+        workSequence[3] === toCols(goalSequence)[3] // javascript
+    ) {
         window.confirm(`Congratulations! You've guessed on ${seqHeight}th line!`);
         seqHeight = 1;
         reroll();
-    } else if (document.querySelector(".active-row") === null) {
+        resetRows();
+    }
+    if (document.querySelector(".active-row").previousElementSibling === null) {
         window.confirm(`Ran out of guesses, try again?`);
         reroll();
+        resetRows();
     } else {
-        console.log("Something went wrong with game over conditions");
+        console.log("game over conditions not met");
     }
+}
+//in case of reroll, reset working rows
+function resetRows() {
+    console.log("this should reset board");
 }
 
 startInitialize();
