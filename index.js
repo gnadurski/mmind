@@ -90,11 +90,13 @@ function handleSelectionClick(e) {
     }
     selection = e.target;
 }
-/* function deactivateRow() {
+
+function deactivateRow() {
     document.querySelectorAll(".active-row>p.color").forEach((item) => {
-        item.removeEventListener("click");
+        item.removeEventListener("click", handleSelectionClick);
     });
-}*/
+    document.querySelector("ul.active-row").classList.remove("active-row");
+}
 
 // select color for picked circle
 function replaceColor(event) {
@@ -113,8 +115,6 @@ function replaceColor(event) {
 function compareGuess() {
     // hints stored: n -> color not found, w -> color in wrong position, b -> color correct
     let hintResult = ["n", "n", "n", "n"];
-    // to make it easier, first remove selection
-    document.querySelector(".selected").classList.remove("selected");
     // read color class names of circles
     let givenCols = [
         document.querySelector(`div.rows > ul.active-row > li:nth-child(${1})`)
@@ -137,36 +137,34 @@ function compareGuess() {
                 hintPos++;
             }
         }
-        //console.log(hintResult);
+        console.log(hintResult);
     }
-    if (document.querySelector(".active-row").previousElementSibling !== null)
-        moveRowUp();
+    moveRowUp();
 }
 
 // activate next row and mark it's first circle as selected
 function moveRowUp() {
-    document.querySelectorAll(".active-row>.p-color").forEach((item) => {
-        item.removeEventListener("click", handleSelectionClick);
-    });
-    document.querySelector("ul.active-row").classList.remove("active-row");
-
-    function testedFunc() {
-        console.log("surprisingly, it works");
-    }
-
-    let nextRow = document.querySelector(
-        `div.rows > ul:nth-child(${9 - seqHeight})`
-    );
-    if (nextRow === null) {
+    let nextRow;
+    if (seqHeight > 9) {
+        console.log(
+            "Looks like you're higher than anticipated, refresh page maybe"
+        );
+    } else if (seqHeight === 9) {
         console.log("There is no next row");
-    } else {
-        nextRow.classList.add("active-row");
+        nextRow = document.querySelector("div.rows > ul:nth-child(9)");
+        seqHeight = 1;
+    } else if (seqHeight < 9) {
+        nextRow = document.querySelector(
+            `div.rows > ul:nth-child(${9 - seqHeight})`
+        );
         seqHeight++;
-        document.querySelector("ul.active-row > li").classList.add("selected");
-        selection = document.querySelector(".selected");
-
-        activateRow();
     }
+    deactivateRow();
+    document.querySelector(".selected").classList.remove("selected");
+    nextRow.classList.add("active-row");
+    document.querySelector("ul.active-row > li").classList.add("selected");
+    selection = document.querySelector(".selected");
+    activateRow();
 }
 
 // output hints according to guessing's accuracy
@@ -189,7 +187,7 @@ function checkGameOver() {
         reroll();
         resetRows();
     }
-    if (document.querySelector(".active-row").previousElementSibling === null) {
+    if (seqHeight === 9) {
         window.confirm(`Ran out of guesses, try again?`);
         reroll();
         resetRows();
@@ -200,6 +198,22 @@ function checkGameOver() {
 //in case of reroll, reset working rows
 function resetRows() {
     console.log("this should reset board");
+
+    // remove colors from board
+    document.querySelectorAll(".rows>.flex-row>.p-color").forEach((item) => {
+        item.classList[1] = ["gray"];
+    });
+    // activate bottom row
+    document
+        .querySelector(".rows>.flex-row:nth-child(9)")
+        .classList.add("active-row");
+    activateRow();
+    // remove hints
+    document
+        .querySelectorAll(".rows-hint>.flex-row>.ansquare")
+        .forEach((item) => {
+            item.classList = ["ansquare nothing-found"];
+        });
 }
 
 startInitialize();
