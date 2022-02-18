@@ -72,6 +72,7 @@ function reroll() {
     document.querySelector(".reroll").classList.add("hidden");
     document.querySelector(".goal").classList.add("hidden");
     randomiseAgain();
+    resetRows();
 }
 
 // pick a circle to change color
@@ -205,13 +206,11 @@ function checkGameOver() {
         window.confirm(`Congratulations! You've guessed on ${seqHeight}th line!`);
         seqHeight = 1;
         reroll();
-        resetRows();
         wasGameJustOver = true;
     }
     if (seqHeight === 9) {
         window.confirm(`Ran out of guesses, try again?`);
         reroll();
-        resetRows();
         wasGameJustOver = true;
     } else {
         console.log("game over conditions not met");
