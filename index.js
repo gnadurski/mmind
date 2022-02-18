@@ -5,6 +5,7 @@ let workSequence = ["gray", "gray", "gray", "gray"];
 let indication;
 let selection = document.querySelector(".selected");
 let seqHeight = 1;
+let wasGameJustOver = false;
 
 // initialize
 function startInitialize() {
@@ -126,20 +127,39 @@ function compareGuess() {
         document.querySelector(`div.rows > ul.active-row > li:nth-child(${4})`)
         .classList[1],
     ];
+    // for (let i = 0; i < 4; i++) {
+    //     for (let j = 0; j < 4; j++) {
+    //         if (toCols(goalSequence).find((element) => element === givenCols[i])) {
+    //             if (givenCols[i] === toCols(goalSequence)[j]) {
+    //                 hintResult[j] = "b";
+    //             } else if (compareOthers(givenCols[j], goalSequence)) {
+    //                 hintResult[j] = "w";
+    //             }
+    //         } else {
+    //             hintResult[j] = "n";
+    //         }
+    //     }
+    // }
     for (let i = 0; i < 4; i++) {
-        let hintPos = 0;
         if (toCols(goalSequence).find((element) => element === givenCols[i])) {
-            if (givenCols[i] === toCols(goalSequence)[i]) {
-                hintResult[hintPos] = "b";
-                hintPos++;
-            } else {
-                hintResult[hintPos] = "w";
-                hintPos++;
+            if (toCols(goalSequence)[i] === givenCols[i]) {
+                hintResult[i] = "b";
+            } else if (compareOthers(givenCols[i], goalSequence)) {
+                hintResult[i] = "w";
             }
+        } else {
+            hintResult[i] = "n";
         }
-        console.log(hintResult);
     }
-    moveRowUp();
+    console.log(hintResult);
+
+    // move row up only if the game didn't end in this step
+    if (!wasGameJustOver) {
+        moveRowUp();
+    } else {
+        wasGameJustOver = false;
+    }
+    toHint(hintResult, seqHeight);
 }
 
 // activate next row and mark it's first circle as selected
@@ -147,7 +167,7 @@ function moveRowUp() {
     let nextRow;
     if (seqHeight > 9) {
         console.log(
-            "Looks like you're higher than anticipated, refresh page maybe"
+            "Looks like you're higher than anticipated, consider refreshing the page"
         );
     } else if (seqHeight === 9) {
         console.log("There is no next row");
@@ -186,11 +206,13 @@ function checkGameOver() {
         seqHeight = 1;
         reroll();
         resetRows();
+        wasGameJustOver = true;
     }
     if (seqHeight === 9) {
         window.confirm(`Ran out of guesses, try again?`);
         reroll();
         resetRows();
+        wasGameJustOver = true;
     } else {
         console.log("game over conditions not met");
     }
@@ -201,8 +223,11 @@ function resetRows() {
 
     // remove colors from board
     document.querySelectorAll(".rows>.flex-row>.p-color").forEach((item) => {
-        item.classList[1] = ["gray"];
+        item.classList = ["p-color gray"];
     });
+    document
+        .querySelector(".rows>.flex-row:nth-child(9)>.p-color")
+        .classList.add("selected");
     // activate bottom row
     document
         .querySelector(".rows>.flex-row:nth-child(9)")
