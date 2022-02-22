@@ -18,7 +18,9 @@ function toHint(letters, activeHeight) {
     }
     for (let i = 1; i <= 4; i++) {
         document.querySelector(
-            `.rows-hint>ul:nth-child(${11 - activeHeight})>.ansquare:nth-child(${i})`
+            `.rows-hint>.flex-row:nth-child(${
+        10 - activeHeight
+      })>.ansquare:nth-child(${i})`
         ).classList = `ansquare ${hintArray[i - 1]}`;
     }
 }

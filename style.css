@@ -218,7 +218,7 @@ h1 {
 }
 
 .selected {
-    border: 2px dashed #252566;
+    border: 2px solid #252566;
 }
 
 .hidden {

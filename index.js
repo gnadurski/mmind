@@ -1,5 +1,3 @@
-//console.log("It's working!")
-
 let goalSequence;
 let workSequence = ["gray", "gray", "gray", "gray"];
 let indication;
@@ -15,11 +13,6 @@ function startInitialize() {
         item.addEventListener("click", handlePaletteClick);
     });
 
-    // color palette recognizing clicks
-    function handlePaletteClick(colorClicked) {
-        replaceColor(colorClicked);
-    }
-
     document
         .getElementsByClassName("button-ask")[0]
         .addEventListener("click", checkGameOver); // check button game over
@@ -31,6 +24,10 @@ function startInitialize() {
         .addEventListener("click", compareGuess); // check button compare
 }
 
+// color palette recognizing clicks
+function handlePaletteClick(colorClicked) {
+    replaceColor(colorClicked);
+}
 // randomize a sequence of colors
 function randomColor() {
     return Math.floor(Math.random() * 8 + 1);
@@ -128,19 +125,7 @@ function compareGuess() {
         document.querySelector(`div.rows > ul.active-row > li:nth-child(${4})`)
         .classList[1],
     ];
-    // for (let i = 0; i < 4; i++) {
-    //     for (let j = 0; j < 4; j++) {
-    //         if (toCols(goalSequence).find((element) => element === givenCols[i])) {
-    //             if (givenCols[i] === toCols(goalSequence)[j]) {
-    //                 hintResult[j] = "b";
-    //             } else if (compareOthers(givenCols[j], goalSequence)) {
-    //                 hintResult[j] = "w";
-    //             }
-    //         } else {
-    //             hintResult[j] = "n";
-    //         }
-    //     }
-    // }
+
     for (let i = 0; i < 4; i++) {
         if (toCols(goalSequence).find((element) => element === givenCols[i])) {
             if (toCols(goalSequence)[i] === givenCols[i]) {
@@ -154,13 +139,14 @@ function compareGuess() {
     }
     console.log(hintResult);
 
+    toHint(hintResult, seqHeight);
+
     // move row up only if the game didn't end in this step
     if (!wasGameJustOver) {
         moveRowUp();
     } else {
         wasGameJustOver = false;
     }
-    toHint(hintResult, seqHeight);
 }
 
 // activate next row and mark it's first circle as selected
@@ -210,7 +196,9 @@ function checkGameOver() {
     }
     if (seqHeight === 9) {
         window.confirm(`Ran out of guesses, try again?`);
+        // seqHeight = 1;
         reroll();
+        seqHeight = 1;
         wasGameJustOver = true;
     } else {
         console.log("game over conditions not met");
@@ -219,18 +207,17 @@ function checkGameOver() {
 //in case of reroll, reset working rows
 function resetRows() {
     console.log("this should reset board");
+    let firstRow = document.querySelector(".rows>.flex-row:nth-child(9)");
 
     // remove colors from board
     document.querySelectorAll(".rows>.flex-row>.p-color").forEach((item) => {
         item.classList = ["p-color gray"];
     });
-    document
-        .querySelector(".rows>.flex-row:nth-child(9)>.p-color")
-        .classList.add("selected");
-    // activate bottom row
-    document
-        .querySelector(".rows>.flex-row:nth-child(9)")
-        .classList.add("active-row");
+    // activate row, recognise selection
+    document.querySelector(".active-row").classList = ["flex-row center"];
+    firstRow.classList.add("active-row");
+    firstRow.children[0].classList.add("selected");
+    selection = firstRow.children[0];
     activateRow();
     // remove hints
     document
