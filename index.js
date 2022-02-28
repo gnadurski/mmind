@@ -22,6 +22,9 @@ function startInitialize() {
     document
         .getElementsByClassName("button-ask")[0]
         .addEventListener("click", compareGuess); // check button compare
+    document
+        .getElementsByClassName("how-to-play")[0]
+        .addEventListener("click", explainGame); // tutorial popup
 }
 
 // color palette recognizing clicks
