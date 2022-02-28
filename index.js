@@ -228,6 +228,7 @@ function resetRows() {
         .forEach((item) => {
             item.classList = ["ansquare nothing-found"];
         });
+    seqHeight = 1;
 }
 
 startInitialize();
