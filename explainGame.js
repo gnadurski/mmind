@@ -7,32 +7,36 @@ let textContent = document.querySelector(".tutorial-content");
 let clicksBefore = 0;
 
 function turnToFirstPage() {
-    console.log("first page");
-
     textContent.innerHTML =
-        'The "goal row" will be hidden under this button. You can cheat by clicking it to reveal the color sequence prematurely.';
+        'The "goal row" will be hidden under this button. You can cheat by clicking it to reveal the color sequence early.';
     document.querySelector(".tutorial-proceed").innerHTML =
         "Click anywhere within outlined area to proceed.";
 }
 
 function turnToSecondPage() {
-    console.log("second page");
+    textContent.innerHTML =
+        'Pick a color from palette by clicking it. Chosen color will then be assigned to selected circle in your "active row".';
 }
 
 function turnToThirdPage() {
-    console.log("third page");
+    textContent.innerHTML =
+        'Your guesses history will appear here. Click the "check" button at the bottom to compare your guess with goal.';
 }
 
 function turnToFourthPage() {
-    console.log("fourth page");
+    textContent.innerHTML =
+        "Hints appear here. When you guess a color and its position correctly a square will turn black in that position.";
 }
 
 function turnToFifthPage() {
-    console.log("fifth page");
+    textContent.innerHTML =
+        "When you guess a color that appears somewhere else, a square will turn white in position, in which you placed that color";
 }
 
 function turnToSixthPage() {
-    console.log("sixth page");
+    textContent.innerHTML =
+        "The sooner you can guess the better! Find a consistent strategy to do so. Good luck!";
+    explanation.onclick = leaveTutorial;
 }
 
 let arrayOfPages = [
@@ -56,7 +60,6 @@ function explainGame() {
 }
 
 function proceed() {
-    console.log(clicksBefore);
     arrayOfPages[clicksBefore]();
     clicksBefore++;
 }
