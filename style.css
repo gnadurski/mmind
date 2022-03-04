@@ -71,7 +71,7 @@ h1 {
 }
 
 .goal-row {
-    border: 4px solid gray;
+    border-bottom: 4px solid gray;
 }
 
 .button-big {
@@ -100,6 +100,7 @@ h1 {
 .table {
     display: flex;
     flex: 8;
+    border-bottom: 4px solid gray;
 }
 
 .palette {
@@ -151,7 +152,7 @@ h1 {
 }
 
 .ansquare {
-    border: 3px solid #233233;
+    border: 3px solid #322322;
     width: min(8vh, 8vw);
     height: min(8vh, 8vw);
     margin: 1px;
@@ -227,13 +228,19 @@ h1 {
     display: none;
 }
 
+.tutorial-visuals {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
 .explanation {
     display: flex;
     flex-direction: column;
     position: absolute;
-    margin-top: 2.5%;
-    height: 90%;
-    width: 33%;
+    margin-top: 25vh;
+    height: max(25vh, 25vw);
+    width: max(25vh, 25vw);
     align-self: center;
     justify-self: center;
     background-color: gray;
@@ -246,11 +253,12 @@ h1 {
     justify-content: center;
 }
 
-.tutorial-content {
-    display: flex;
-    width: 100%;
+.tutorial-content,
+.tutorial-proceed {
+    align-self: center;
+    width: 80%;
+    text-align: center;
     justify-content: center;
-    align-items: center;
 }
 
 .dark {
@@ -263,4 +271,9 @@ h1 {
 
 .hidden {
     display: none;
+}
+
+.tutorial-hled {
+    outline: solid 2px lime;
+    outline-offset: 10px;
 }

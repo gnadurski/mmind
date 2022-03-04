@@ -1,20 +1,68 @@
-function explainGame() {
-    document.querySelector(".container").classList.add("dark");
-    document.querySelector(".board").classList.add("dimmed");
-    document.querySelector(".explanation").classList.remove("hidden");
+let container = document.querySelector(".container");
+let board = document.querySelector(".board");
+let explanation = document.querySelector(".explanation");
+let tutorial = document.querySelector(".tutorial-visuals");
+let textContent = document.querySelector(".tutorial-content");
 
-    document.querySelector(".tutorial-content").innerHTML =
-        "Click anywhere within this gray area to proceed";
+let clicksBefore = 0;
 
-    document.querySelector(".explanation").onclick = leaveTutorial; //proceed instead, when it's ready
+function turnToFirstPage() {
+    console.log("first page");
+
+    textContent.innerHTML =
+        'The "goal row" will be hidden under this button. You can cheat by clicking it to reveal the color sequence prematurely.';
+    document.querySelector(".tutorial-proceed").innerHTML =
+        "Click anywhere within outlined area to proceed.";
 }
 
-function proceed(clicksBefore) {
-    console.log("to be continued ", clicksBefore);
+function turnToSecondPage() {
+    console.log("second page");
+}
+
+function turnToThirdPage() {
+    console.log("third page");
+}
+
+function turnToFourthPage() {
+    console.log("fourth page");
+}
+
+function turnToFifthPage() {
+    console.log("fifth page");
+}
+
+function turnToSixthPage() {
+    console.log("sixth page");
+}
+
+let arrayOfPages = [
+    turnToFirstPage,
+    turnToSecondPage,
+    turnToThirdPage,
+    turnToFourthPage,
+    turnToFifthPage,
+    turnToSixthPage,
+];
+
+function explainGame() {
+    container.classList.add("dark");
+    board.classList.add("dimmed");
+    tutorial.classList.remove("hidden");
+
+    textContent.innerHTML =
+        'The goal of this puzzle is to "guess" a random sequence of colors hidden behind a bar. Every time you guess wrong you will receive a hint.';
+
+    explanation.onclick = proceed;
+}
+
+function proceed() {
+    console.log(clicksBefore);
+    arrayOfPages[clicksBefore]();
+    clicksBefore++;
 }
 
 function leaveTutorial() {
-    document.querySelector(".container").classList.remove("dark");
-    document.querySelector(".board").classList.remove("dimmed");
-    document.querySelector(".explanation").classList.add("hidden");
+    container.classList.remove("dark");
+    board.classList.remove("dimmed");
+    explanation.classList.add("hidden");
 }

@@ -192,6 +192,7 @@ function checkGameOver() {
         workSequence[2] === toCols(goalSequence)[2] &&
         workSequence[3] === toCols(goalSequence)[3] // javascript
     ) {
+        reveal();
         window.confirm(`Congratulations! You've guessed on ${seqHeight}th line!`);
         seqHeight = 1;
         reroll();
