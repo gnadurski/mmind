@@ -6,6 +6,12 @@ let textContent = document.querySelector(".tutorial-content");
 
 let clicksBefore = 0;
 
+function leaveTutorial() {
+    container.classList.remove("dark");
+    board.classList.remove("dimmed");
+    explanation.classList.add("hidden");
+}
+
 function turnToFirstPage() {
     textContent.innerHTML =
         'The "goal row" will be hidden under this button. You can cheat by clicking it to reveal the color sequence early.';
@@ -48,6 +54,11 @@ let arrayOfPages = [
     turnToSixthPage,
 ];
 
+function proceed() {
+    arrayOfPages[clicksBefore]();
+    clicksBefore++;
+}
+
 function explainGame() {
     container.classList.add("dark");
     board.classList.add("dimmed");
@@ -57,15 +68,4 @@ function explainGame() {
         'The goal of this puzzle is to "guess" a random sequence of colors hidden behind a bar. Every time you guess wrong you will receive a hint.';
 
     explanation.onclick = proceed;
-}
-
-function proceed() {
-    arrayOfPages[clicksBefore]();
-    clicksBefore++;
-}
-
-function leaveTutorial() {
-    container.classList.remove("dark");
-    board.classList.remove("dimmed");
-    explanation.classList.add("hidden");
 }
