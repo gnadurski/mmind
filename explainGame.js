@@ -9,7 +9,7 @@ let clicksBefore = 0;
 function leaveTutorial() {
     container.classList.remove("dark");
     board.classList.remove("dimmed");
-    explanation.classList.add("hidden");
+    tutorial.classList.add("hidden");
 }
 
 function turnToFirstPage() {
